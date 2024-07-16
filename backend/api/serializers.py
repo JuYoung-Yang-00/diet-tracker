@@ -18,6 +18,8 @@ class UserSerializer(serializers.ModelSerializer):
 class FoodPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = FoodPost
-        fields = ["id", "title", "content", "meal", "created_at", "author"]
-        extra_kwargs = {"author": {"read_only": True}}
-        
+        fields = ["id", "title", "content", "meal", "date", "created_at", "author"]
+        extra_kwargs = {
+            "author": {"read_only": True},
+            "created_at": {"read_only": True}  # Ensuring it's not included in the input
+        }

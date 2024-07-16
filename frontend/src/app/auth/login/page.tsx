@@ -21,58 +21,64 @@ const Login = () => {
     try {
       const response = await login(username, password);
       console.log("Login response", response);
-      toast({
-        description: 'Login successful.',
-      });
-      router.push('/service');
-     } catch (error) {
-          console.error('Login failed:', error);
-          throw new Error('Failed to login');
-      } finally {
-        setLoading(false);
+      if (response && response.status === 200) {
+        toast({
+          description: 'Login successful.',
+        });
+        router.push('/');
+      } else {
+        throw new Error('Login failed');
       }
+    } catch (error) {
+      console.error('Login failed:', error);
+      toast({
+        title: "Uh oh!",
+        description: 'Please check your username and password.',
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen mx-4">
-        <div className='h-[600px] w-full max-w-[1200px] mx-auto border rounded '>
-            <div className='w-full items-center justify-center flex'>
-                <form onSubmit={handleSubmit} className="w-full max-w-xs lg:w-2/3 p-8 space-y-8">
-                  <h2 className="text-center font-extralight text-3xl">Login</h2>
-                    <div className=''>
-                    <input
-                        type="username"
-                        id="username"
-                        name="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        className="w-full py-1.5 px-2 border rounded font-extralight "
-                        placeholder='Username'
-                        required
-                    />
-                    </div>
-                    <div>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full py-1.5 px-2 border rounded font-extralight "
-                        placeholder='Password'
-                        required
-                    />
-                    </div>
-                    <button type="submit" disabled={loading} className="w-full p-2 rounded border font-extralight hover:font-light">
-                    {loading ? 'Logging in...' : 'Log in'}
-                    </button>
-                    <p className="text-center">
-                    <Link href="/auth/signup">
-                        <span className="font-extralight hover:font-light">Sign up</span>
-                    </Link>
-                    </p>
-                </form>
-            </div>
+    <div className="flex flex-col items-center justify-center min-h-screen mx-4 font-mono">
+        <div className='h-[500px] w-full max-w-[400px] flex items-center justify-center mx-auto border rounded-lg'>
+            <form onSubmit={handleSubmit} className=" lg:w-2/3 p-8 space-y-8">
+              <h2 className="text-center text-3xl text-lime-500">Login</h2>
+                <div className=''>
+                <input
+                    type="username"
+                    id="username"
+                    name="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="w-full py-1.5 px-2 border rounded-lg "
+                    placeholder='Username'
+                    required
+                />
+                </div>
+                <div>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full py-1.5 px-2 border rounded-lg "
+                    placeholder='Password'
+                    required
+                />
+                </div>
+                <button type="submit" disabled={loading} className="w-full p-2 rounded-lg bg-lime-500 text-white hover:bg-lime-600 transform duration-200 ease-in-out">
+                {loading ? 'Logging in...' : 'Log in'}
+                </button>
+                <p className="text-center">
+                <Link href="/auth/signup">
+                    <span className=" hover:text-lime-600 text-lime-500 transform duration-200 ease-in-out">Sign up</span>
+                </Link>
+                </p>
+            </form>
         </div>
     </div>
   );

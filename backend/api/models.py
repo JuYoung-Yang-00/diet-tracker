@@ -5,7 +5,13 @@ from django.contrib.auth.models import User
 class FoodPost(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
-    meal = models.CharField(max_length=20, choices=[("breakfast", "Breakfast"), ("lunch", "Lunch"), ("dinner", "Dinner")])    
+    meal = models.CharField(max_length=20, choices=[
+        ("breakfast", "Breakfast"), 
+        ("lunch", "Lunch"), 
+        ("dinner", "Dinner"),
+        ("snack", "Snack") 
+    ])
+    date = models.DateField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="foodposts")
 

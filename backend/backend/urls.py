@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from api.views import CreateUserView
+from api.views import CreateUserView, UserInfoView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenBlacklistView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -11,7 +11,6 @@ from rest_framework.views import APIView
 from django.middleware.csrf import get_token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
-
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request: Request, *args, **kwargs) -> Response:
@@ -90,6 +89,7 @@ class LogoutView(APIView):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/user/signup/', CreateUserView.as_view(), name='signup'),
+    path('api/user', UserInfoView.as_view(), name='userinfo'),
     path('api/login/', CustomTokenObtainPairView.as_view(), name='login'),
     path('api/token/refresh/', CustomCookieTokenRefreshView.as_view(), name='token_refresh'),
     path('api/logout/', LogoutView.as_view(), name='logout'),

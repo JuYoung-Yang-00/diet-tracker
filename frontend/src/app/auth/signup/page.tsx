@@ -37,8 +37,10 @@ const Signup = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!isPasswordValid) {
+      router.push('/auth/signup');
       toast({
         description: 'Please ensure the password meets all requirements.',
+        variant: "destructive"
       });
       return;
     }
@@ -46,11 +48,12 @@ const Signup = () => {
     try {
       await signup(formData.username, formData.password); 
       toast({
-        description: 'Welcome aboard!',
+        description: 'Welcome aboard! Please login.',
       });
     } catch (error: any) {
       toast({
         description: 'Signup failed - '+ error.message,
+        variant: "destructive"
       });
       router.push('/auth/signup');
     } finally {
@@ -59,49 +62,41 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen mx-4">
-        <div className='h-[700px] lg:h-[650px] w-full max-w-[1200px] mx-auto border rounded grid lg:grid-cols-12 grid-cols-1'>
-            <div 
-                className='flex-col w-full lg:col-span-6 col-span-12 lg:flex hidden justify-between border-r'
-                style={{ backgroundImage: `url('/44.png')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-            >
-            </div>
-            <div className='w-full lg:col-span-6 col-span-12 items-center justify-center flex'>
-                <form onSubmit={handleSubmit} className="w-full max-w-sm lg:w-2/3 p-8 space-y-6 lg:space-y-8">
-                    {/* <Image src="/logo.png" alt="logo" width={100} height={100}  className="mx-auto mb-4 lg:hidden flex" /> */}
-                    <h2 className="text-center font-extralight text-3xl">Signup</h2>
-                    <div className="space-y-6">
-                    {(['username', 'password'] as const).map(field => (
-                        <div key={field}>
-                        <input
-                            id={field}
-                            type={field === 'password' ? 'password' : 'text'}
-                            autoComplete={field}
-                            required
-                            className="w-full py-1.5 px-2 border rounded font-extralight "
-                            name={field}
-                            value={formData[field]}
-                            onChange={handleInputChange}
-                            placeholder={field.split(/(?=[A-Z])/).map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' ')}
-                        />
-                        </div>
-                    ))}
-                    {!isPasswordValid && (
-                        <p className="text-red-500 text-xs font-extralight">
-                        Password must be at least 8 characters long and contain uppercase, lowercase, digit, and symbol.
-                        </p>
-                    )}
+    <div className="flex flex-col items-center justify-center min-h-screen mx-4 font-mono">
+        <div className='h-[500px] w-full max-w-[400px] flex items-center justify-center mx-auto border rounded-lg'>
+          <form onSubmit={handleSubmit} className="lg:w-2/3 p-8 space-y-8">
+                <h2 className="text-center text-3xl text-lime-500">Signup</h2>
+                <div className="space-y-6">
+                {(['username', 'password'] as const).map(field => (
+                    <div key={field}>
+                    <input
+                        id={field}
+                        type={field === 'password' ? 'password' : 'text'}
+                        autoComplete={field}
+                        required
+                        className="w-full py-1.5 px-2 border rounded-lg "
+                        name={field}
+                        value={formData[field]}
+                        onChange={handleInputChange}
+                        placeholder={field.split(/(?=[A-Z])/).map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' ')}
+                    />
                     </div>
-                    <button type="submit" disabled={loading} className="w-full p-2 rounded border font-extralight hover:font-light">
-                    {loading ? 'Signing up...' : 'Sign up'}
-                    </button>
-                    <p className="text-center">
-                    <Link href="/auth/login">
-                        <span className="font-extralight hover:font-light">Login</span>
-                    </Link>
+                ))}
+                {!isPasswordValid && (
+                    <p className="text-red-500 text-xs font-light">
+                    Password must be at least 8 characters long and contain uppercase, lowercase, digit, and symbol.
                     </p>
-                </form>
-            </div>
+                )}
+                </div>
+                <button type="submit" disabled={loading} className="w-full p-2 rounded-lg bg-lime-500 text-white hover:bg-lime-600 transform duration-200 ease-in-out">
+                {loading ? 'Signing up...' : 'Sign up'}
+                </button>
+                <p className="text-center">
+                <Link href="/auth/login">
+                    <span className="hover:text-lime-600 text-lime-500 transform duration-200 ease-in-out">Login</span>
+                </Link>
+                </p>
+            </form>
         </div>
     </div>
   );

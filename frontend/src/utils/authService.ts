@@ -12,7 +12,7 @@ export const login = async (username: string, password: string) => {
         return response;
     } catch (error: any) {
         console.error('Login Error:', error.response ? error.response.data : error.message);
-        throw new Error('Login Error: ' + (error.response ? JSON.stringify(error.response.data) : error.message));
+        // throw new Error('Login Error: ' + (error.response ? JSON.stringify(error.response.data) : error.message));
     }
 };
 

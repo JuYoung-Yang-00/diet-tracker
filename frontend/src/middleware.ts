@@ -5,13 +5,7 @@ export function middleware(request: NextRequest) {
 
     const { pathname } = request.nextUrl;
 
-    if (pathname === '/') {
-        const url = request.nextUrl.clone();
-        url.pathname = '/service';
-        return NextResponse.redirect(url);
-    }
-
-    if (pathname.startsWith('/service') && !token) {
+    if (pathname === '/' && !token) {
         const url = request.nextUrl.clone();
         url.pathname = '/auth/login';
         return NextResponse.redirect(url);
@@ -19,7 +13,7 @@ export function middleware(request: NextRequest) {
 
     if (pathname.startsWith('/auth/login') && token) {
         const url = request.nextUrl.clone();
-        url.pathname = '/service';
+        url.pathname = '/';
         return NextResponse.redirect(url);
     }
 
