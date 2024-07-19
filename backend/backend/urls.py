@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from api.views import CreateUserView, UserInfoView
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenBlacklistView
+from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from django.conf import settings
@@ -35,7 +35,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             domain=settings.SIMPLE_JWT["AUTH_COOKIE_DOMAIN"],
             path='/',
             secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
-            httponly=False,  # CSRF cookie must be readable by JavaScript
+            httponly=False,  
             samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
         )
 
@@ -43,21 +43,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         
         print("Response: ", response.data)
         return response
-class CustomCookieTokenRefreshView(TokenRefreshView):
-    def post(self, request: Request, *args, **kwargs) -> Response:
-        response = super().post(request, *args, **kwargs)
-        access_token = response.data["access"]
-        expires = timezone.now() + settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"]
-
-        response.set_cookie(
-            key=settings.SIMPLE_JWT["AUTH_COOKIE"],
-            value=access_token,
-            expires=expires,
-            secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
-            httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
-            samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"]
-        )
-        return response
+    
 
 class LogoutView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -81,7 +67,6 @@ class LogoutView(APIView):
                 httponly=False, 
                 samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
             )
-            
             return response
         except Exception as e:
             return Response(status=400)
@@ -91,8 +76,6 @@ urlpatterns = [
     path('api/user/signup/', CreateUserView.as_view(), name='signup'),
     path('api/user', UserInfoView.as_view(), name='userinfo'),
     path('api/login/', CustomTokenObtainPairView.as_view(), name='login'),
-    path('api/token/refresh/', CustomCookieTokenRefreshView.as_view(), name='token_refresh'),
     path('api/logout/', LogoutView.as_view(), name='logout'),
-    path('api-auth/', include('rest_framework.urls')),
     path ('api/', include('api.urls'))
 ]

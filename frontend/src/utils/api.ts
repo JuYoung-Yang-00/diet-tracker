@@ -1,6 +1,4 @@
-// utils/api.ts
 import axios from 'axios';
-// import { cookies } from 'next/headers';
 import Cookies from 'js-cookie';
 
 
@@ -28,4 +26,24 @@ api.interceptors.request.use((config) => {
     return Promise.reject(error);
 });
 
+
+api.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const { status } = error.response || {};
+        if (status === 401) {
+            if (!error.config._retry) {
+                error.config._retry = true;
+                Cookies.remove('token', { path: '/' });
+                Cookies.remove('csrftoken', { path: '/' });
+                window.location.href = '/auth/login';
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
+
 export default api;
+
+

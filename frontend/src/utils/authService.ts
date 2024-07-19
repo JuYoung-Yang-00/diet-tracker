@@ -1,6 +1,4 @@
-// utils/authService.ts
 import api from '@/utils/api';
-import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export const login = async (username: string, password: string) => {
@@ -12,7 +10,6 @@ export const login = async (username: string, password: string) => {
         return response;
     } catch (error: any) {
         console.error('Login Error:', error.response ? error.response.data : error.message);
-        // throw new Error('Login Error: ' + (error.response ? JSON.stringify(error.response.data) : error.message));
     }
 };
 
@@ -23,7 +20,7 @@ export const signup = async (username: string, password: string) => {
         console.log("Singup response", response);
         return response.data; 
     } catch (error: any) {
-        throw new Error('Signup Error: ', error);
+        console.error('Signup Error:', error.response ? error.response.data : error.message);
     }
 };
 
@@ -44,7 +41,6 @@ export const logout = async () => {
         return response;
     } catch (error: any) {
         console.error('Logout Error:', error.response ? error.response.data : error.message);
-        throw new Error('Logout Error: ' + (error.response ? JSON.stringify(error.response.data) : error.message));
     }
 };
 

@@ -6,6 +6,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useToast } from "@/components/ui/use-toast"
 import { login } from '@/utils/authService';
+import Image from 'next/image';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -19,7 +20,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await login(username, password);
+      const response = await login(username.toLowerCase(), password);
       console.log("Login response", response);
       if (response && response.status === 200) {
         toast({
@@ -43,8 +44,9 @@ const Login = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen mx-4 font-mono">
-        <div className='h-[500px] w-full max-w-[400px] flex items-center justify-center mx-auto border rounded-lg'>
+        <div className='h-[500px] w-full max-w-[400px] flex flex-col items-center justify-center mx-auto border border-lime-300 rounded-lg'>
             <form onSubmit={handleSubmit} className=" lg:w-2/3 p-8 space-y-8">
+              <Image src="/diettracker.png" alt="logo" width={100} height={100}  className="mx-auto flex" />
               <h2 className="text-center text-3xl text-lime-500">Login</h2>
                 <div className=''>
                 <input
@@ -75,7 +77,7 @@ const Login = () => {
                 </button>
                 <p className="text-center">
                 <Link href="/auth/signup">
-                    <span className=" hover:text-lime-600 text-lime-500 transform duration-200 ease-in-out">Sign up</span>
+                    <span className=" hover:text-lime-600 text-lime-500 transform duration-200 ease-in-out">Signup</span>
                 </Link>
                 </p>
             </form>

@@ -46,10 +46,12 @@ const Signup = () => {
     }
     setLoading(true);
     try {
-      await signup(formData.username, formData.password); 
+      await signup(formData.username.toLowerCase(), formData.password); 
+      const newFormData = new FormData();
       toast({
-        description: 'Welcome aboard! Please login.',
+        description: 'Welcome aboard!🎉 Please login!',
       });
+      router.push('/auth/login');
     } catch (error: any) {
       toast({
         description: 'Signup failed - '+ error.message,
@@ -63,8 +65,9 @@ const Signup = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen mx-4 font-mono">
-        <div className='h-[500px] w-full max-w-[400px] flex items-center justify-center mx-auto border rounded-lg'>
+        <div className='h-[500px] w-full max-w-[400px] flex items-center justify-center mx-auto border border-lime-300 rounded-lg'>
           <form onSubmit={handleSubmit} className="lg:w-2/3 p-8 space-y-8">
+                <Image src="/diettracker.png" alt="logo" width={100} height={100}  className="mx-auto flex" />
                 <h2 className="text-center text-3xl text-lime-500">Signup</h2>
                 <div className="space-y-6">
                 {(['username', 'password'] as const).map(field => (
@@ -89,7 +92,7 @@ const Signup = () => {
                 )}
                 </div>
                 <button type="submit" disabled={loading} className="w-full p-2 rounded-lg bg-lime-500 text-white hover:bg-lime-600 transform duration-200 ease-in-out">
-                {loading ? 'Signing up...' : 'Sign up'}
+                {loading ? 'Signing up...' : 'Signup'}
                 </button>
                 <p className="text-center">
                 <Link href="/auth/login">

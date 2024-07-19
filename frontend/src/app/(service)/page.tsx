@@ -28,25 +28,12 @@ function Home() {
   };
 
   return (
-    <main className="flex min-h-screen sm:max-h-screen flex-col items-center justify-between sm:mt-8 sm:p-12 p-2 font-mono">
-      <div className="w-full max-w-[1450px] items-center justify-between text-sm flex flex-col">
-        <h1 className='m-8'> Welcome back, {data?.username ? capitalizeFirst(data.username) : ''}!! </h1>
-
-        <div className='w-full grid lg:grid-cols-12 gap-4 grid-cols-1'>
-          <div className='w-full lg:col-span-6 bg-red-200'>
-            <FoodPostList />
-          </div>
-
-          <div className='w-full lg:col-span-6 bg-blue-200 h-[400px]'>
-            <PostNewMeal />
-          </div>
-
-
+    <main className='z-100 min-h-screen w-full max-w-[1400px] mx-auto px-2 mt-16 font-mono'>
+        <h1 className='mt-20 font-bold text-2xl'> Welcome back, {data?.username ? capitalizeFirst(data.username) : ''} </h1>
+        <div className= 'flex flex-col lg:flex-row gap-4 lg:mt-20 mt-10'>
+          <FoodPostList />
+          <PostNewMeal />
         </div>
-
-
-
-      </div>
     </main>
   );
 }  

@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import api from '@/utils/api';
+import { useToast } from "@/components/ui/use-toast"
 
 const FoodPostList = () => {
     const [user, setUser] = useState(null);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { toast } = useToast();
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -37,22 +39,62 @@ const FoodPostList = () => {
         }
     }, [user]); 
 
+
+    const handleDelete = async (id: number) => {
+        try {
+            await api.delete(`http://127.0.0.1:8000/api/meals/${id}`);
+            setData(data.filter((meal: { id: number }) => meal.id !== id));
+            toast({
+                description: 'Meal deleted successfully',
+              });
+        } catch (error) {
+            console.error('Error deleting meal:', error);
+            toast({
+                title: "Uh oh!",
+                description: 'Failed to delete post',
+                variant: "destructive",
+              });
+        }
+    };
+
     if (loading) {
         return <div>Loading...</div>;
     }
 
     return (
-        <div className="w-full flex flex-col items-center justify-center">
-            <h1>Your past meals</h1>
-            {data.map((meal: { id: string; title: string; date: string, meal: string, content: string }) => (
-                <div key={meal.id}>
-                    {meal.title} - {meal.date}
-                    {meal.content}
-                    {meal.meal}
-                </div>
-            ))}
+        <div className="w-full p-4 max-w-[1480px] max-h-[600px] lg:max-h-[1000px] mx-auto flex flex-col gap-4 border border-lime-300 rounded-lg">
+            <h1 className="font-bold pb-4 text-xl">Your Past Meals</h1>
+            <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-lime-500">
+                <table className="w-full table-auto">
+                    <thead>
+                        <tr className="border-b border-lime-500">
+                            <th className="py-2 px-4 text-left text-sm font-bold">Title</th>
+                            <th className="py-2 px-4 text-left text-sm font-bold">Date</th>
+                            <th className="py-2 px-4 text-left text-sm font-bold">Meal</th>
+                            <th className="py-2 px-4 text-left text-sm font-bold">Content</th>
+                            {/* <th className="py-2 px-4 text-left text-sm font-bold">Delete</th> */}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map((meal: { id: string; title: string; date: string; meal: string; content: string }) => (
+                            <tr key={meal.id}>
+                                <td className="py-3 px-4 text-sm text-gray-800">{meal.title}</td>
+                                <td className="py-3 px-4 text-sm text-gray-800">{meal.date}</td>
+                                <td className="py-3 px-4 text-sm text-gray-800">{meal.meal}</td>
+                                <td className="py-3 px-4 text-sm text-gray-800">{meal.content}</td>
+                                <td className="py-3 px-4 text-sm text-gray-800">
+                                    <button onClick={() => handleDelete(Number(meal.id))}> 🗑️                                      
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
+    
+
 };
 
 export default FoodPostList;

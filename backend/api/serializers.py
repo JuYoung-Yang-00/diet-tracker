@@ -21,5 +21,5 @@ class FoodPostSerializer(serializers.ModelSerializer):
         fields = ["id", "title", "content", "meal", "date", "created_at", "author"]
         extra_kwargs = {
             "author": {"read_only": True},
-            "created_at": {"read_only": True}  # Ensuring it's not included in the input
+            "created_at": {"read_only": True} 
         }
