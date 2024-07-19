@@ -13,7 +13,7 @@ const FoodPostList = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const result = await api.get('http://127.0.0.1:8000/api/user');
+                const result = await api.get('http://3.86.178.234:8000/api/user');
                 setUser(result.data.id); 
                 console.log("Result:", result);
             } catch (error) {
@@ -27,7 +27,7 @@ const FoodPostList = () => {
         if (user) {
             const fetchMeals = async () => {
                 try {
-                    const result = await api.get(`http://127.0.0.1:8000/api/meals/user/${user}`);
+                    const result = await api.get(`http://3.86.178.234:8000/api/meals/user/${user}`);
                     setData(result.data);
                 } catch (error) {
                     console.error('Error fetching meals data:', error);
@@ -42,7 +42,7 @@ const FoodPostList = () => {
 
     const handleDelete = async (id: number) => {
         try {
-            await api.delete(`http://127.0.0.1:8000/api/meals/${id}`);
+            await api.delete(`http://3.86.178.234:8000/api/meals/${id}`);
             setData(data.filter((meal: { id: number }) => meal.id !== id));
             toast({
                 description: 'Meal deleted successfully',

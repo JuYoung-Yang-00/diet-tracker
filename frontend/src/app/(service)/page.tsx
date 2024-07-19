@@ -8,11 +8,12 @@ import FoodPostList from '@/app/(service)/meals/FoodPostList';
 function Home() {
   const [data, setData] = useState<{ username: string } | null>(null);
   const [loading, setLoading] = useState(true);
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await api.get('http://127.0.0.1:8000/api/user');
+        const result = await api.get('http://3.86.178.234:8000/api/user');
         setData(result.data);
         setLoading(false);
       } catch (error) {
